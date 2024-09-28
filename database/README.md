@@ -80,6 +80,15 @@ erDiagram
     
     incidents ||--o{ incident_history: ""
     incident_history }|--|| users: ""
+
+    zip_codes {
+      bigint id PK
+      varchar[5] zip_code
+      geography(POINT_4326) position ""
+    }
+
+    incidents }o--|| zip_codes: "located via zip_code"
+
 ```
 
 ## Authentication
