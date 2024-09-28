@@ -8,4 +8,4 @@ Schema are created using [Mermaid](https://mermaid.js.org/)
 
 ## Structure
 
-- *database* contains database schema visuals. For database migration file, see the api documentation
+- [database](./database) contains database schema visuals. For database migration file, see the api documentation
