@@ -46,7 +46,7 @@ erDiagram
         bigint incident_target_id FK "REFERENCES incident_targets(id) ON DELETE RESTRICT NOT NULL"
         bigint incident_cause_id FK "REFERENCES incident_causes(id) ON DELETE RESTRICT NOT NULL"
         timestamp_with_time_zone date "NOT NULL"
-        varchar(5) zip_code "NOT NULL"
+        bigint town_id FK "REFERENCES towns(id) ON DELETE RESTRICT NOT NULL"
         text title "NOT NULL"
         text description "NOT NULL"
         timestamp_with_time_zone created_at 
@@ -81,13 +81,19 @@ erDiagram
     incidents ||--o{ incident_history: ""
     incident_history }|--|| users: ""
 
-    zip_codes {
+    %% incident -> municipality -> zip_code with its location. That way we get a nice precise location
+
+    towns {
       bigint id PK
+      varchar[5] insee_code
+      text town_name
       varchar[5] zip_code
-      geography(POINT_4326) position ""
+      text routing_label
+      text line_5
+      geography(POINT_4326) geopoint
     }
 
-    incidents }o--|| zip_codes: "located via zip_code"
+    incidents }o--|| towns: ""
 
 ```
 
