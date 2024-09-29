@@ -151,3 +151,7 @@ schema_migrations {
 }
 
 ```
+
+## Geo data
+
+Geographical comes from [La Poste DataNova](https://datanova.laposte.fr/datasets/laposte-hexasmal). [The file](./base-officielle-codes-postaux.csv) in this repository is a CSV export of all cites with center coordinates.
