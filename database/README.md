@@ -154,4 +154,11 @@ schema_migrations {
 
 ## Geo data
 
-Geographical comes from [La Poste DataNova](https://datanova.laposte.fr/datasets/laposte-hexasmal). [The file](./base-officielle-codes-postaux.csv) in this repository is a CSV export of all cites with center coordinates.
+Geographical data comes from [La Poste DataNova](https://datanova.laposte.fr/datasets/laposte-hexasmal). [The file](./base-officielle-codes-postaux.csv) in this repository is a CSV export of all cites with center coordinates.
+
+The file [processed_town.csv](./processed_town.csv) is an export of town compatible with database schema. It can be loaded with:
+
+```sh
+psql -h localhost -p 5432 -d postgres -U postgres -c "\copy towns from 'doc/database/processed_town.csv' with delimiter as ',' CSV HEADER"
+```
+
