@@ -33,36 +33,36 @@ erDiagram
         boolean is_active "NOT NULL" DEFAULT true
     }
 
-    incident_status {
-        int Pending_verification "Pending_verification"
-        int Verified "Verified"
-        int Unverifiable "Unverifiable"
-        int Rejected "Rejected"
+    incident_status_enum {
+        Pending NA "Pending" 
+        Verified NA "Verified" 
+        Not_verifiable NA "Not_verifiable" 
+        Rejected NA "Rejected" 
     }
 
     incidents {
         bigint id PK
-        bigint incident_type_id FK "REFERENCES incident_types(id) ON DELETE RESTRICT NOT NULL"
-        bigint incident_target_id FK "REFERENCES incident_targets(id) ON DELETE RESTRICT NOT NULL"
-        bigint incident_cause_id FK "REFERENCES incident_causes(id) ON DELETE RESTRICT NOT NULL"
-        timestamp_with_time_zone date "NOT NULL"
+        bigint incident_type_id FK "REFERENCES incident_types(id) ON DELETE RESTRICT NOT NULL (indexed)"
+        bigint incident_target_id FK "REFERENCES incident_targets(id) ON DELETE RESTRICT NOT NULL (indexed)"
+        bigint incident_cause_id FK "REFERENCES incident_causes(id) ON DELETE RESTRICT NOT NULL (indexed)"
+        timestamp_with_time_zone date "NOT NULL (indexed)"
         bigint town_id FK "REFERENCES towns(id) ON DELETE RESTRICT NOT NULL"
         text title "NOT NULL"
         text description "NOT NULL"
         timestamp_with_time_zone created_at 
         timestamp_with_time_zone updated_at 
         timestamp_with_time_zone deleted_at 
-        incident_status incident_status "NOT NULL DEFAULT 'Pending_verification'"
+        incident_status incident_status "NOT NULL DEFAULT 'Pending'"
+        ft_searchable tsvector "GENERATED ALWAYS AS (to_tsvector('french',title || ' ' || description)) STORED  (indexed)"
     }
 
     incidents }|--|| incident_types : ""
     incidents }|--|| incident_targets : ""
     incidents }|--|| incident_causes : ""
-    incidents }|--|| incident_status : ""
 
     incident_sources {
         bigint id PK
-        bigint incident_id FK "REFERENCES incidents(id) ON DELETE CASCADE NOT NULL"
+        bigint incident_id FK "REFERENCES incidents(id) ON DELETE CASCADE NOT NULL (indexed)"
         text description
         text source
     }
@@ -87,10 +87,11 @@ erDiagram
       bigint id PK
       varchar[5] insee_code
       text town_name
-      varchar[5] zip_code
+      varchar[5] zip_code "(indexed)"
       text routing_label
       text line_5
-      geography(POINT_4326) geopoint
+      geography(POINT_4326) geopoint "(indexed)"
+      ft_searchable tsvector "GENERATED ALWAYS AS (to_tsvector('french', zip_code || ' ' || town_name || ' ' || routing_label || ' ' || line_5)) STORED (indexed)"
     }
 
     incidents }o--|| towns: ""
@@ -126,8 +127,8 @@ erDiagram
   }
 
   users_roles {
-    bigint user_id FK "REFERENCES users(id) ON DELETE CASCADE NOT NULL"
-    bigint role_id FK "REFERENCES roles(id) ON DELETE CASCADE NOT NULL"
+    bigint user_id FK "REFERENCES users(id) ON DELETE CASCADE NOT NULL (indexed)"
+    bigint role_id FK "REFERENCES roles(id) ON DELETE CASCADE NOT NULL (indexed)"
   }
 
   users ||--|{ users_roles : ""
