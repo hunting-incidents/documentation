@@ -2,7 +2,9 @@
 
 This document contains database schema related content.
 
-## Incident
+## Schema
+
+### Incident
 
 Following is the incident schema
 
@@ -98,7 +100,7 @@ erDiagram
 
 ```
 
-## Authentication
+### Authentication
 
 Here are user and role related schemas
 
@@ -137,7 +139,7 @@ erDiagram
   users ||--o{ user_history  : ""
 ```
 
-## Migration
+### Migration
 
 Database migration is managed by golang-migrate. Following is the used schema
 
@@ -153,7 +155,7 @@ schema_migrations {
 
 ```
 
-## Geo data
+### Geo data
 
 Geographical data comes from [La Poste DataNova](https://datanova.laposte.fr/datasets/laposte-hexasmal). [The file](./base-officielle-codes-postaux.csv) in this repository is a CSV export of all cites with center coordinates.
 
