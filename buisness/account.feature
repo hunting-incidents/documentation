@@ -1,5 +1,23 @@
 Feature: Account Management
 
+    Scenario: User clicks user icon when not logged in
+        Given the user is not authenticated
+        When the user clicks the user icon
+        Then a modal should appear allowing the user to log in
+
+    Scenario: User clicks user icon when logged in
+        Given the user is authenticated
+        When the user clicks the user icon
+        Then a menu should appear with options:
+            | Settings       |
+            | Log out        |
+
+    Scenario: User logs out from menu
+        Given the user is authenticated
+        When the user clicks the user icon
+        And selects "Log out"
+        Then the user should be logged out and returned to the home page
+
     Scenario: User changes username
         Given the user is authenticated
         When the user updates their username

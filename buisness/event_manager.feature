@@ -5,6 +5,17 @@ Feature: Event Manager Features
         When they log in
         Then they should be authenticated with event_manager rights
 
+    Scenario: User with event_manager rights can create an event
+        Given the user is authenticated with event_manager rights
+        When the user clicks the user icon
+        Then the menu should include an option for event creation
+
+    Scenario: Event manager creates a new event
+        Given the user is authenticated with event_manager rights
+        When the user creates a new event with all proper fields filled
+        Then the new event should be created and visible in the event list
+        And an entry should be added to the event history recording the creation
+
     Scenario: Event manager sees edit button on event details
         Given the user is authenticated with event_manager rights
         And the event details are displayed
