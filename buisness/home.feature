@@ -31,3 +31,55 @@ Feature: Home Page Map Display
             | geolocalisation | "Within 10km", "Within 50km"                                                                         |
         When they select a value for any filter
         Then only incidents matching the selected filters should be shown on the map
+        And the incident count should be updated
+
+    Scenario Outline: Filter incidents by specific criteria
+        Given the user is on the home page
+        When they apply a "<filter_type>" filter with value "<filter_value>"
+        Then only incidents matching the filter should be displayed
+        And the map should update to show only relevant markers
+
+        Examples:
+            | filter_type | filter_value |
+            | type        | Mort         |
+            | target      | Chasseur     |
+            | status      | Verified     |
+
+    Scenario: Combine multiple filters
+        Given the user is on the home page
+        When they select "Mort" for the type filter
+        And they select "Chasseur" for the target filter
+        And they select "Last month" for the date filter
+        Then only incidents matching all three filters should be shown
+        And the incident count should reflect the combined filtering
+
+    Scenario: Reset all filters
+        Given the user has applied multiple filters
+        When they click the "Reset filters" button
+        Then all filters should be cleared
+        And all incidents from the last year should be displayed again
+
+    Scenario: Responsive design on mobile devices
+        Given the user is on a mobile device
+        When they access the home page
+        Then the map should be touch-friendly
+        And filter options should be accessible via mobile-friendly interface
+        And incident details should display properly on small screens
+
+    Scenario: Handle empty search results
+        Given the user is on the home page
+        When they search for text that matches no incidents
+        Then they should see a "No incidents found" message
+        And the map should show no markers
+        When they clear the search
+        Then all incidents should be displayed again
+
+    Scenario: Map clustering behavior
+        Given the user is on the home page
+        When they zoom out to view a large area
+        Then incident markers should be clustered together
+        And cluster numbers should show the count of incidents
+        When they click on a cluster
+        Then the map should zoom in to show individual markers
+        When they zoom in sufficiently
+        Then individual incident markers should be visible
